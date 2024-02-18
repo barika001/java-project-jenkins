@@ -9,8 +9,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the source code from version control
-                checkout scm
+                // Checkout the source code from the 'main' branch
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/your-username/your-repo.git']]])
             }
         }
 
