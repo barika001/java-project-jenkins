@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         JAVA_HOME = tool 'JDK8'
-        MAVEN_HOME = tool 'Maven3'
+        MAVEN_HOME = tool 'Maven3' ?: ''
     }
 
     stages {
