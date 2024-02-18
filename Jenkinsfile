@@ -96,12 +96,12 @@ pipeline {
 
         success {
             // Send a notification on successful build
-            emailext attachLog: true, body: 'Build and deployment successful!', recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Build Successful', to: '2023.barika.khalidi@ves.ac.in'
+            emailext attachLog: true, body: 'Build and deployment successful!', recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Build Successful', to: '001barika@gmail.com'
         }
 
         failure {
             // Send a notification on build failure
-            emailext attachLog: true, body: 'Build or deployment failed. Please check the logs for details.', recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Build Failed', to: '2023.barika.khalidi@ves.ac.in'
+            emailext attachLog: true, body: 'Build or deployment failed. Please check the logs for details.', recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Build Failed', to: '001barika@gmail.com'
         }
     }
 }
