@@ -1,89 +1,32 @@
 pipeline {
     agent any
-
+    
     environment {
         JAVA_HOME = tool 'JDK8'
-        MAVEN_HOME = tool 'Maven3' ?: ''
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the source code from the 'main' branch
-                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/barika001/java-project-jenkins']]])
+                git 'https://github.com/barika001/java-project-jenkins.git'
             }
         }
 
         stage('Build and Test') {
             steps {
-                // Compile and run unit tests using Maven
-                script {
-                    try {
-                        sh "${MAVEN_HOME}/bin/mvn clean compile test"
-                    } catch (Exception ex) {
-                        currentBuild.result = 'FAILURE'
-                        error("Error: ${ex.message}")
-                    }
-                }
+                sh 'mvn clean compile test'
             }
         }
 
         stage('Package') {
             steps {
-                // Package the Java application using Maven
-                script {
-                    try {
-                        sh "${MAVEN_HOME}/bin/mvn package"
-                    } catch (Exception ex) {
-                        currentBuild.result = 'FAILURE'
-                        error("Error: ${ex.message}")
-                    }
-                }
+                sh 'mvn package'
             }
         }
 
-        stage('Run Integration Tests') {
+        stage('Deploy') {
             steps {
-                // Run integration tests using Maven
-                script {
-                    try {
-                        sh "${MAVEN_HOME}/bin/mvn verify"
-                    } catch (Exception ex) {
-                        currentBuild.result = 'FAILURE'
-                        error("Error: ${ex.message}")
-                    }
-                }
-            }
-        }
-
-        stage('Deploy to Artifactory') {
-            steps {
-                // Deploy artifacts to Artifactory
-                script {
-                    try {
-                        sh "${MAVEN_HOME}/bin/mvn deploy"
-                    } catch (Exception ex) {
-                        currentBuild.result = 'FAILURE'
-                        error("Error: ${ex.message}")
-                    }
-                }
-            }
-        }
-
-        stage('Deploy to Production') {
-            when {
-                expression { currentBuild.resultIsBetterOrEqualTo('UNSTABLE') }
-            }
-            steps {
-                script {
-                    try {
-                        // Your deployment script or commands to deploy to production
-                        sh 'echo Deploying to production...'
-                    } catch (Exception ex) {
-                        currentBuild.result = 'FAILURE'
-                        error("Error: ${ex.message}")
-                    }
-                }
+                echo 'Deploying...'
             }
         }
     }
@@ -92,6 +35,13 @@ pipeline {
         always {
             // Cleanup actions
             deleteDir()
+        }
+        success {
+            echo 'Build and deployment successful!'
+        }
+
+        failure {
+            echo 'Build or deployment failed. Please check the logs for details.'
         }
     }
 }
