@@ -78,7 +78,7 @@ pipeline {
                 script {
                     try {
                         // Your deployment script or commands to deploy to production
-                        echo 'Deploying to production...'
+                        sh 'echo Deploying to production...'
                     } catch (Exception ex) {
                         currentBuild.result = 'FAILURE'
                         error("Error: ${ex.message}")
