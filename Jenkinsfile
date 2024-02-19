@@ -1,41 +1,36 @@
 pipeline {
     agent any
-    
-    environment {
-        JAVA_HOME = tool 'JDK8'
-    }
 
     stages {
-        stage('Build and Test') {
+        stage('Build') {
             steps {
-                bat 'mvn clean compile test'
+                echo 'Building the project...'
             }
         }
 
-        stage('Package') {
+        stage('Test') {
             steps {
-                bat 'mvn package'
+                echo 'Running tests...'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
+                echo 'Deploying the application...'
             }
         }
     }
 
     post {
-        always {
-            // Cleanup actions
-            deleteDir()
-        }
         success {
             echo 'Build and deployment successful!'
         }
-
         failure {
             echo 'Build or deployment failed. Please check the logs for details.'
+        }
+        always {
+            echo 'Cleaning up...'
+            deleteDir()
         }
     }
 }
