@@ -65,10 +65,6 @@ pipeline {
     }
 
     post {
-        always {
-            deleteDir()
-        }
-
         success {
             echo 'Build and deployment successful!'
         }
