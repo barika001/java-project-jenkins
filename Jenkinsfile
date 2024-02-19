@@ -6,12 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/barika001/java-project-jenkins.git'
-            }
-        }
-
         stage('Build and Test') {
             steps {
                 bat 'mvn clean compile test'
